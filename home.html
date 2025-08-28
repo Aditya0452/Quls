@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qulas - Build your next idea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.52/build/spline-viewer.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* A dark blue-gray from the Tailwind palette */
+            color: #E2E8F0; /* A light slate color for text */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width:0;  /* Firefox */
+        }
+         body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, and Opera */
+        }
+        .gradient-bg {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(251, 146, 60, 0.3) 0%, rgba(251, 146, 60, 0) 70%);
+            filter: blur(80px);
+            z-index: -1;
+        }
+        /* Style for the enhanced liquid glass effect */
+        .liquid-glass-effect {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(25px) saturate(1.2);
+            -webkit-backdrop-filter: blur(25px) saturate(1.2); /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(251, 146, 60, 0.3), 0 0 60px rgba(251, 146, 60, 0.2);
+        }
+        /* New liquid glossy effect for orange buttons */
+        .orange-liquid-glass {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.9), rgba(249, 115, 22, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(251, 146, 60, 0.6);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .orange-liquid-glass:hover {
+            box-shadow: 0 0 35px rgba(251, 146, 60, 0.9);
+            transform: translateY(-2px);
+        }
+        /* Background for features section */
+        .circular-gradient-bg {
+            background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), #0F172A 40%);
+        }
+        /* Style for pricing card hover effect */
+        .pricing-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-color: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.2);
+        }
+        /* Style for the product screenshot glass effect */
+        .product-screenshot-glass-effect {
+            position: relative;
+            background: #1E293B; /* Fallback background */
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.2);
+            padding: 2px; /* This creates the border thickness */
+        }
+        
+        .product-screenshot-glass-effect::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%; /* Make it larger to ensure the gradient covers the area during rotation */
+            height: 150%;
+            background: conic-gradient(
+                from 0deg,
+                #6366F1, /* Indigo */
+                #EC4899, /* Pink */
+                #F59E0B, /* Amber */
+                #84CC16, /* Lime */
+                #10B981, /* Emerald */
+                #6366F1  /* Back to Indigo to complete the loop */
+            );
+            animation: rotate-gradient 4s linear infinite;
+            z-index: 0;
+        }
+        .product-screenshot-glass-effect > * {
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes rotate-gradient {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Carousel styles */
+        .carousel-container {
+            width: 100%;
+            height: 100%; /* Adjust as needed */
+            overflow: hidden;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+        /* Style for the footer card */
+        .footer-card-effect {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+    <!-- Background Gradient Elements -->
+    <div class="gradient-bg top-0 right-0"></div>
+    <div class="gradient-bg bottom-1/4 left-0 -translate-x-1/2" style="background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(99, 102, 241, 0) 70%);"></div>
+
+    <div class="container mx-auto px-6 py-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                 <svg class="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                <span class="text-2xl font-bold text-white">Qulas</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="Indexs.html" class="text-slate-300 hover:text-white transition">Product Tour</a>
+                <a href="#" class="text-slate-300 hover:text-white transition">Pricing</a>
+                <a href="Indexs.html#about" class="text-slate-300 hover:text-white transition">About us</a>
+            </nav>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="Indexs.html#signin" class="text-slate-300 hover:text-white transition">Log in</a>
+                <a href="Indexs.html#signup" class="orange-liquid-glass text-white font-semibold px-5 py-2 rounded-full">Sign Up</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 bg-slate-800 rounded-lg p-4">
+            <a href="Indexs.html" class="block py-2 text-slate-300 hover:text-white">Product Tour</a>
+            <a href="#pricing" class="block py-2 text-slate-300 hover:text-white">Pricing</a>
+            <a href="Indexs.html#about" class="block py-2 text-slate-300 hover:text-white">About us</a>
+            <a href="Indexs.html#signin" class="block py-2 text-slate-300 hover:text-white">Log in</a>
+            <a href="Indexs.html#signup" class="block mt-2 text-center orange-liquid-glass text-white font-semibold px-4 py-2 rounded-full">Sign Up</a>
+        </div>
+
+
+        <!-- Hero Section -->
+        <main class="text-center mt-8 md:mt-32">
+            <div class="flex justify-center mb-6">
+                 <button class="liquid-glass-effect text-sm text-orange-300 px-4 py-2 rounded-full flex items-center gap-2">
+                    ✨ Introducing Qulas AI
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                 </button>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight">
+                Build your next idea and <br> ship your dream product
+            </h1>
+            <p class="mt-6 text-slate-400 max-w-2xl mx-auto">
+                Qulas is a complete solution for developers to build, ship, and scale their products. We provide the tools you need to succeed.
+            </p>
+
+             <div class=" mt-0 flex justify-center h-[300px] md:h-[500px] w-full">
+                 <!-- Spline 3D Bot -->
+                <spline-viewer url="https://prod.spline.design/H86zTfwDE-QNWcQj/scene.splinecode"></spline-viewer>
+            </div>
+
+            <div class="mt-10 flex justify-center">
+                <div class="liquid-glass-effect rounded-full p-2 flex items-center justify-between gap-4 max-w-md w-full">
+                    <div class="flex items-center gap-2 pl-4">
+                        <span class="text-yellow-300">✨</span>
+                        <span class="text-slate-300">Start building your dream product now!</span>
+                    </div>
+                    <button class="orange-liquid-glass text-white font-semibold px-6 py-3 rounded-full flex items-center gap-2">
+                        Get Started
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Image -->
+            <div class="mt-16 md:mt-24 px-4">
+                <div class="product-screenshot-glass-effect relative max-w-4xl mx-auto rounded-xl shadow-2xl overflow-hidden">
+                     <div class="p-2 bg-slate-900/80 rounded-t-lg flex items-center space-x-1.5">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div class="carousel-container bg-slate-900/80">
+                        <div class="carousel-track">
+                            <div class="carousel-slide"><img src="https://placehold.co/1024x640/1E293B/E2E8F0?text=Screenshot+1" alt="Product screenshot 1" class="w-full h-auto"></div>
+                            <div class="carousel-slide"><img src="https://placehold.co/1024x640/1E293B/FFFFFF?text=Screenshot+2" alt="Product screenshot 2" class="w-full h-auto"></div>
+                            <div class="carousel-slide"><img src="https://placehold.co/1024x640/1E293B/FBBF24?text=Screenshot+3" alt="Product screenshot 3" class="w-full h-auto"></div>
+                            <div class="carousel-slide"><img src="https://placehold.co/1024x640/1E293B/E2E8F0?text=Screenshot+1" alt="Product screenshot 1" class="w-full h-auto"></div> <!-- Duplicate first slide for smooth loop -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div class="circular-gradient-bg py-16 rounded-3xl mt-24 md:mt-32">
+            <!-- Features Section 1 -->
+            <section class="text-center">
+                <div class="grid md:grid-cols-3 gap-12 px-6">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-slate-800 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">API First</h3>
+                        <p class="text-slate-400 mt-2">Our platform is built with an API-first approach, making it easy to integrate.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-slate-800 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Secure</h3>
+                        <p class="text-slate-400 mt-2">Security is our top priority. Your data is safe and sound with us.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-slate-800 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Fast</h3>
+                        <p class="text-slate-400 mt-2">Experience lightning-fast performance and reliability for your applications.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section 2 -->
+            <section class="mt-24 text-center">
+                 <div class="grid md:grid-cols-3 gap-12 px-6">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-slate-800 p-3 rounded-full mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V4m0 16v-2M8 8l2-2 2 2m-4 8l2 2 2-2"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Highly Scalable</h3>
+                        <p class="text-slate-400 mt-2">Our infrastructure is designed to scale with your business as you grow.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-slate-800 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7l8 5 8-5"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Extensive Database</h3>
+                        <p class="text-slate-400 mt-2">Access a powerful and flexible database to store and manage your data.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-slate-800 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Reliable</h3>
+                        <p class="text-slate-400 mt-2">Count on our platform for consistent uptime and dependable performance.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Pricing Section -->
+        <section class="mt-24 md:mt-32">
+            <h2 class="text-3xl md:text-4xl font-bold text-white text-center">Flexible pricing for your needs</h2>
+            <div class="mt-12 grid md:grid-cols-3 gap-8">
+                <!-- Pricing Card 1 -->
+                <div class="pricing-card bg-slate-800/50 border border-slate-700 rounded-xl p-8 flex flex-col">
+                    <h3 class="text-lg font-semibold text-white">Free</h3>
+                    <p class="text-4xl font-bold text-white mt-4">$0 <span class="text-lg font-medium text-slate-400">/ month</span></p>
+                    <ul class="mt-6 space-y-4 text-slate-300 flex-grow">
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>1 Project</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>10,000 API Calls</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Community Support</li>
+                    </ul>
+                    <button class="mt-8 w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-full transition">Get Started</button>
+                </div>
+                <!-- Pricing Card 2 (Highlight) -->
+                <div class="pricing-card bg-slate-800 border-2 border-orange-500 rounded-xl p-8 flex flex-col relative">
+                     <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</span>
+                    <h3 class="text-lg font-semibold text-white">Pro</h3>
+                    <p class="text-4xl font-bold text-white mt-4">$49 <span class="text-lg font-medium text-slate-400">/ month</span></p>
+                    <ul class="mt-6 space-y-4 text-slate-300 flex-grow">
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>10 Projects</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>1M API Calls</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Advanced Analytics</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Priority Support</li>
+                    </ul>
+                    <button class="mt-8 w-full orange-liquid-glass text-white font-semibold py-3 rounded-full">Choose Plan</button>
+                </div>
+                <!-- Pricing Card 3 -->
+                <div class="pricing-card bg-slate-800/50 border border-slate-700 rounded-xl p-8 flex flex-col">
+                    <h3 class="text-lg font-semibold text-white">Enterprise</h3>
+                    <p class="text-4xl font-bold text-white mt-4">Custom</p>
+                    <ul class="mt-6 space-y-4 text-slate-300 flex-grow">
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Unlimited Projects</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Custom API Limits</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Dedicated Support</li>
+                    </ul>
+                    <button class="mt-8 w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-full transition">Contact Us</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="circular-gradient-bg py-16 rounded-3xl mt-24 md:mt-32">
+            <!-- CTA Section -->
+            <section class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Start building your dream project today</h2>
+                <button class="mt-8 orange-liquid-glass text-white font-semibold px-8 py-4 rounded-full">
+                    Start your free trial
+                </button>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-24 md:mt-32">
+            <div class="footer-card-effect rounded-3xl p-8">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                            <span class="text-2xl font-bold text-white">Qulas</span>
+                        </div>
+                        <p class="text-slate-400 mt-4">The complete solution to build, ship, and scale.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-white">Product</h4>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-slate-400 hover:text-white">Features</a></li>
+                            <li><a href="#" class="text-slate-400 hover:text-white">Pricing</a></li>
+                            <li><a href="#" class="text-slate-400 hover:text-white">Docs</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-white">Company</h4>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-slate-400 hover:text-white">About</a></li>
+                            <li><a href="#" class="text-slate-400 hover:text-white">Careers</a></li>
+                            <li><a href="#" class="text-slate-400 hover:text-white">Blog</a></li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h4 class="font-semibold text-white">Legal</h4>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-slate-400 hover:text-white">Privacy Policy</a></li>
+                            <li><a href="#" class="text-slate-400 hover:text-white">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-slate-700 text-center text-slate-500 text-sm">
+                    &copy; 2025 Qulas, Inc. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // JavaScript for mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // JavaScript for infinite carousel
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        let currentIndex = 0;
+
+        function moveToSlide(track, currentSlide, targetSlide) {
+            track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+            currentSlide.classList.remove('current-slide');
+            targetSlide.classList.add('current-slide');
+        }
+
+        function updateCarousel() {
+            currentIndex++;
+            track.style.transition = 'transform 0.5s ease-in-out';
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            if (currentIndex === slides.length - 1) {
+                setTimeout(() => {
+                    track.style.transition = 'none';
+                    currentIndex = 0;
+                    track.style.transform = `translateX(0)`;
+                }, 500);
+            }
+        }
+
+        setInterval(updateCarousel, 3000); // Change slide every 3 seconds
+
+    </script>
+
+</body>
+</html>
