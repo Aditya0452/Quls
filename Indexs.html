@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" id="status-bar-color" content="#621eff">
+    <meta name="theme-color" id="status-bar-color" content="#621eff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <title>Qulas - Empowering Innovation Through Technology</title>
     <link rel="icon" type="image/x-icon" href="qulas.jpg">
     
@@ -1051,6 +1055,13 @@
         const openPaletteBtn = document.getElementById('palette-picker-btn');
         const closePaletteBtn = document.getElementById('palette-dialog-close-btn');
 
+        function setStatusBarColor(color) {
+        // Select the meta tag by its ID
+        const statusBar = document.querySelector("#status-bar-color");
+        // If the tag exists, update its content attribute
+        if (statusBar) { statusBar.setAttribute("content", color);}
+        }
+
        function applyPalette(paletteKey) {
             const selectedPalette = palettes[paletteKey];
             if (!selectedPalette) return;
@@ -1073,7 +1084,7 @@
                 styleTag.innerHTML = styleString;
                 document.head.appendChild(styleTag);
             }
-
+            setStatusBarColor(selectedPalette.vars['--gradient-bg-from']); 
             localStorage.setItem('selectedPalette', paletteKey);
         }
 
@@ -1143,3 +1154,4 @@
 </body>
 
 </html>
+
